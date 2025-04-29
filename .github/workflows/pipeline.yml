@@ -3,7 +3,7 @@ name: Build, Push and Scan with Aqua SaaS (Enterprise Standard)
 on: [pull_request,push]
 
 env:
-  IMAGE_NAME: knightfortheright/mytest
+  IMAGE_NAME: mytest
   IMAGE_TAG: CICD
   REGISTRY: docker.io # Example: 1234567890.dkr.ecr.eu-central-1.amazonaws.com
 
