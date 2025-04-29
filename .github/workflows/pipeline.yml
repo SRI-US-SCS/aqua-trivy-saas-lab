@@ -1,7 +1,6 @@
 name: Build, Push and Scan with Aqua SaaS (Enterprise Standard)
 
-on:
-  workflow_dispatch: # manual trigger
+on: [pull_request,push]
 
 env:
   IMAGE_NAME: knightfortheright/mytest
