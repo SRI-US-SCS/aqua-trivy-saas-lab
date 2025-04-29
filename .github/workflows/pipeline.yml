@@ -32,4 +32,4 @@ jobs:
 
       - name: Scan image via Aqua SaaS
         run: |
-          docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan -H https://c1fae5dbe2.cloud.aquasec.com -U ${{ secrets.SAAS_USER }} -p ${{ secrets.SAAS_PASS }} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan --host https://c1fae5dbe2.cloud.aquasec.com --token ${{ secrets.SAAS_token}} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
