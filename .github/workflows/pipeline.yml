@@ -1,6 +1,6 @@
 name: Build, Push and Scan with Aqua SaaS (Enterprise Standard)
 
-on: [pull_request,push]
+on: [pull_request, push]
 
 env:
   IMAGE_NAME: mytest
@@ -12,31 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Log in to DockerHub
-      run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login docker.io -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login docker.io -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
 
-    - name: Build and Push Docker Image
-      run: |
-        docker build -t docker.io/knightfortheright/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-        docker push docker.io/knightfortheright/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t docker.io/knightfortheright/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+          docker push docker.io/knightfortheright/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
   scan:
     needs: build-and-push
     runs-on: ubuntu-latest
-#    container:
-  #    image: aquasec/aqua-scanner:latest
-#      env:
- #       AQUA_KEY: ${{ secrets.AQUA_KEY }}
-#        AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
-       # AQUA_URL: https://api.eu-1.supply-chain.cloud.aquasec.com
-       # CSPM_URL: https://eu-1.api.cloudsploit.com
-       # TRIVY_RUN_AS_PLUGIN: aqua
 
     steps:
-    - name: Scan image via Aqua SaaS
-      run: |
-        docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan -H https://c1fae5dbe2.cloud.aquasec.com -U ${{ secrets.SAAS_USER } -P ${{ secrets.SAAS_PASS }} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        #trivy image --exit-code 1 --severity CRITICAL,HIGH sri-docker/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        #trivy image --exit-code 1 --severity CRITICAL,HIGH 
+      - name: Scan image via Aqua SaaS
+        run: |
+          docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan -H https://c1fae5dbe2.cloud.aquasec.com -U ${{ secrets.SAAS_USER }} -p ${{ secrets.SAAS_PASS }} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
