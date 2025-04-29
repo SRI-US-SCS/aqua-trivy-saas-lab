@@ -37,4 +37,4 @@ jobs:
     steps:
     - name: Scan image via Aqua SaaS
       run: |
-        trivy image --exit-code 1 --severity CRITICAL,HIGH docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        trivy image --exit-code 1 --severity CRITICAL,HIGH sri-docker/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
