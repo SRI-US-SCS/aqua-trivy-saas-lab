@@ -19,8 +19,8 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-        docker push ${{ env.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        docker build -t docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+        docker push docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
   scan:
     needs: build-and-push
