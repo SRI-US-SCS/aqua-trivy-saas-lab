@@ -1,0 +1,42 @@
+name: Build, Push and Scan with Aqua SaaS (Enterprise Standard)
+
+on:
+  workflow_dispatch: # manual trigger
+
+env:
+  IMAGE_NAME: knightfortheright/mytest
+  IMAGE_TAG: CICD
+  REGISTRY: sri-docker # Example: 1234567890.dkr.ecr.eu-central-1.amazonaws.com
+
+jobs:
+  build-push-scan:
+    runs-on: ubuntu-latest
+    container:
+      image: aquasec/aqua-scanner:latest
+      env:
+        AQUA_KEY: ${{ secrets.AQUA_KEY }}
+        AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
+        AQUA_URL: https://api.eu-1.supply-chain.cloud.aquasec.com
+        CSPM_URL: https://eu-1.api.cloudsploit.com
+        TRIVY_RUN_AS_PLUGIN: aqua
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Docker Registry
+      run: |
+        echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login docker.io -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+    - name: Scan image using Aqua SaaS
+      run: |
+        echo "Starting Aqua SaaS Scan..."
+        trivy image --exit-code 1 --severity CRITICAL,HIGH ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
