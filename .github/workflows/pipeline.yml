@@ -25,11 +25,11 @@ jobs:
   scan:
     needs: build-and-push
     runs-on: ubuntu-latest
-    container:
-      image: aquasec/aqua-scanner:latest
-      env:
-        AQUA_KEY: ${{ secrets.AQUA_KEY }}
-        AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
+#    container:
+  #    image: aquasec/aqua-scanner:latest
+#      env:
+ #       AQUA_KEY: ${{ secrets.AQUA_KEY }}
+#        AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
        # AQUA_URL: https://api.eu-1.supply-chain.cloud.aquasec.com
        # CSPM_URL: https://eu-1.api.cloudsploit.com
        # TRIVY_RUN_AS_PLUGIN: aqua
@@ -37,6 +37,6 @@ jobs:
     steps:
     - name: Scan image via Aqua SaaS
       run: |
-        docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan -H https://c1fae5dbe2.cloud.aquasec.com -U srikanthreddy.gajjala@aquasec.com -P ${{ secrets.SAAS_PASS }} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        docker run -v /var/run/docker.sock:/var/run/docker.sock registry.aquasec.com/scanner:2022.4 scan -H https://c1fae5dbe2.cloud.aquasec.com -U ${{ secrets.SAAS_USER } -P ${{ secrets.SAAS_PASS }} docker.io/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         #trivy image --exit-code 1 --severity CRITICAL,HIGH sri-docker/${{ secrets.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         #trivy image --exit-code 1 --severity CRITICAL,HIGH 
