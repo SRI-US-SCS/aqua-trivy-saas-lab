@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Log in to Aqua registry
-        run: echo "${{ secrets.SAAS_PASS }}" | docker login registry.aquasec.com -u "${{ secrets.SAAS_USER }}" --password-stdin
+        run:  docker login registry.aquasec.com -u "${{ secrets.SAAS_USER }}" -p "${{ secrets.SAAS_PASS }}"
 
       - name: Scan image via Aqua SaaS
         run: |
