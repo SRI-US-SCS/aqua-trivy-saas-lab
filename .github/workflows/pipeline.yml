@@ -28,8 +28,8 @@ jobs:
     container:
       image: aquasec/aqua-scanner:latest
       env:
-        AQUA_KEY: ACdYjo2Xx7jFkQ2fXbZm0W
-        AQUA_SECRET: wbSZUixmPB5PjAUgOWMVUmnsjRv2WZ8WD9V
+        AQUA_KEY: ${{ secrets.AQUA_KEY }}
+        AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
         AQUA_URL: https://api.eu-1.supply-chain.cloud.aquasec.com
         CSPM_URL: https://eu-1.api.cloudsploit.com
        # TRIVY_RUN_AS_PLUGIN: aqua
